@@ -1,32 +1,33 @@
+const { GoogleGenAI } = require('@google/genai');
 const express = require('express');
-const { OpenAI } = require('openai');
-
 const app = express();
+
 app.use(express.json());
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY 
-});
+// Se conecta usando la clave que configuraremos en Render
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 app.post('/chat', async (req, res) => {
     try {
-        const mensajeUsuario = req.body.info;
-        if (!mensajeUsuario) return res.status(400).json({ respuesta: "No hay mensaje." });
+        const userMessage = req.body.message;
+        if (!userMessage) return res.status(400).json({ error: "Sin mensaje" });
 
-        const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [
-                { role: "system", content: "Eres un NPC amigable en Roblox. Responde corto, divertido y en menos de 20 palabras." },
-                { role: "user", content: mensajeUsuario }
-            ],
-            max_tokens: 50
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: userMessage,
+            config: {
+                // Aquí definimos la personalidad de tu NPC en Roblox
+                systemInstruction: "Eres un NPC de Roblox. Responde de forma muy amigable, entusiasta y mantén tus respuestas muy cortas (máximo 2 frases).",
+                maxOutputTokens: 100
+            }
         });
 
-        res.json({ respuesta: response.choices.message.content });
+        res.json({ reply: response.text });
     } catch (error) {
-        res.status(500).json({ respuesta: "Error en el proxy." });
+        console.error(error);
+        res.status(500).json({ error: "Error de IA" });
     }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Puerto ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor listo en puerto ${PORT}`));
