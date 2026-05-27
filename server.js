@@ -13,12 +13,11 @@ app.post('/chat', async (req, res) => {
         if (!userMessage) return res.status(400).json({ error: "Sin mensaje" });
 
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-1.5-flash',
             contents: userMessage,
             config: {
-                // Aquí definimos la personalidad de tu NPC en Roblox
-                systemInstruction: "Eres un NPC de Roblox. Responde de forma muy amigable, entusiasta y mantén tus respuestas muy cortas (máximo 2 frases).",
-                maxOutputTokens: 100
+                systemInstruction: 'Eres un NPC de Roblox. Responde de forma muy amigable y entusiasta.',
+                maxOutputTokens: 300
             }
         });
 
