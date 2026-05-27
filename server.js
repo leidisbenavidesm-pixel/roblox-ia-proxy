@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 
-// Se conecta usando la clave que configuraremos en Render
+// Se conecta usando la clave que configuramos en Render
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 app.post('/chat', async (req, res) => {
@@ -15,10 +15,8 @@ app.post('/chat', async (req, res) => {
         const response = await ai.models.generateContent({
             model: 'gemini-1.5-flash',
             contents: userMessage,
-            config: {
-                systemInstruction: 'Eres un NPC de Roblox. Responde de forma muy amigable y entusiasta.',
-                maxOutputTokens: 300
-            }
+            systemInstruction: 'Eres un NPC de Roblox. Responde de forma muy amigable y entusiasta.',
+            maxOutputTokens: 300
         });
 
         res.json({ reply: response.text });
