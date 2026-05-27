@@ -1,12 +1,15 @@
 {
-  "name": "roblox-ai-proxy",
+  "name": "roblox-ia-proxy",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
-    "@google/genai": "^2.6.0",
+    "@google/genai": "^0.1.1",
     "express": "^4.19.2"
   }
 }
