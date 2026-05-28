@@ -4,25 +4,26 @@ const app = express();
 app.use(express.json());
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const genAI = new GoogleGenerativeAI("AIzaSyAm1Od7ESI2mX_XLKSkiMoJtOf7ZOStCbg");
+const genAI = new GoogleGenerativeAI("AIzaSyC04WKXI2ANNDpuHsmPZ1gW6vccHAm00OI");
 
-app.post('/chat', async (req, res) => {
+// Función simple para responder
+async function hablar(req, res) {
     try {
-        // Validación directa y súper segura para Render
-        const userMessage = (req.body && req.body.message) ? req.body.message : "Hola";
-
+        const userMessage = req.body.message || "Hola";
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        
         const result = await model.generateContent(userMessage);
         const response = await result.response;
-        const text = response.text();
-
-        res.json({ reply: text });
+        
+        res.json({ reply: response.text() });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error de IA" });
     }
-});
+}
+
+// Acepta la conexión como sea que la mande Roblox
+app.use('/', hablar);
+app.use('/chat', hablar);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor listo`));
