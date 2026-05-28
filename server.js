@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // Pon tu clave real de Google AI Studio aquí adentro
-const genAI = new GoogleGenerativeAI("AIzaSyAm1Od7ESI2mX_XLKSkiMoJtOf7ZOStCbg");
+const genAI = new GoogleGenerativeAI("AIzaSyBMSMSHScIOcuRLJGjYA4iWUzmBbm91UnQ");
 
 app.post('/chat', async (req, res) => {
     try {
