@@ -3,16 +3,13 @@ const app = express();
 
 app.use(express.json());
 
-// Cargamos la librería estándar de Google Generative AI
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 app.post('/chat', async (req, res) => {
     try {
-        const userMessage = req.body.message;
-        if (!userMessage) return res.status(400).json({ error: "Sin mensaje" });
+        const userMessage = req.body.message || "Hola";
 
-        // Esta configuración manual nunca falla con el modelo flash
         const model = genAI.getGenerativeModel({ 
             model: "gemini-1.5-flash",
             systemInstruction: "Eres un NPC de Roblox. Responde de forma muy amigable y entusiasta."
