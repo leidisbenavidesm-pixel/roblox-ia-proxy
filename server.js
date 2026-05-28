@@ -4,7 +4,9 @@ const app = express();
 app.use(express.json());
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// REEMPLAZA LAS COMILLAS CON TU CLAVE REAL DE GOOGLE AI STUDIO
+const genAI = new GoogleGenerativeAI("AIzaSyAmlDd7ESZJAm_XUKskUMOjtOf7ZO5LCtg");
 
 app.post('/chat', async (req, res) => {
     try {
@@ -22,7 +24,7 @@ app.post('/chat', async (req, res) => {
         res.json({ reply: text });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error de IA" });
+        res.status(500).json({ error: "Error de IA", detalle: error.message });
     }
 });
 
